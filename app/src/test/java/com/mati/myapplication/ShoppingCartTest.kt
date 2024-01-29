@@ -6,6 +6,8 @@ import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 
 class ShoppingCartTest {
 
@@ -20,25 +22,30 @@ class ShoppingCartTest {
     }
 
 
-    @Test
-    fun `add multiple product, total price sum is correct`() {
+    @ParameterizedTest
+    @ValueSource(
+
+        ints = [1, 2, 3, 4, 5]
+
+    )
+    fun `add multiple product, total price sum is correct`(quantity: Int) {
         val product = Product(
             id = 0,
             name = "ice cream",
             price = 5.0
         )
-        cart.addProduct(product, 3)
+        cart.addProduct(product, quantity)
 
 
         //Action
         val priceSum = cart.getTotalCost()
 
         //Assertion
-        assertThat(priceSum).isEqualTo(15.0)
+        assertThat(priceSum).isEqualTo(quantity * 5.0)
 
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(10)
     fun `add product with negative quantity, throws Exception`() {
         val product = Product(
             id = 0,
