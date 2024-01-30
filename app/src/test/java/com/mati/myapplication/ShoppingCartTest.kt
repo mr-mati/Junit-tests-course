@@ -5,9 +5,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.RepeatedTest
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.ValueSource
+import org.junit.jupiter.params.provider.CsvSource
 
 class ShoppingCartTest {
 
@@ -23,12 +22,15 @@ class ShoppingCartTest {
 
 
     @ParameterizedTest
-    @ValueSource(
-
-        ints = [1, 2, 3, 4, 5]
-
+    @CsvSource(
+        "3, 15.5",
+        "0, 0",
+        "36, 1.0"
     )
-    fun `add multiple product, total price sum is correct`(quantity: Int) {
+    fun `add multiple product, total price sum is correct`(
+        quantity: Int,
+        expectedPriceSum: Double,
+    ) {
         val product = Product(
             id = 0,
             name = "ice cream",
